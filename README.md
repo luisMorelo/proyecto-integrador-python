@@ -7,3 +7,6 @@ Podrás moverte por el mapa usando las teclas ↑ ↓ ← → de tu teclado.
    -Se crea el archivo main del proyecto
     -Se crea una variable llamada jugador en la que se guarda el nombre del jugador
     -Finalmente se imprime un mensaje de vienvenida con el nombre del jugador sijitado 
+
+2. proyecto integrador parte 2:
+   Se escribió un bucle infinito leyendo e imprimiento las teclas y sólo termina cuando se presiona la tecla ↑ indicada como UP
