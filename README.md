@@ -10,3 +10,5 @@ Podrás moverte por el mapa usando las teclas ↑ ↓ ← → de tu teclado.
 
 2. proyecto integrador parte 2:
    Se escribió un bucle infinito leyendo e imprimiento las teclas y sólo termina cuando se presiona la tecla ↑ indicada como UP
+
+2. proyecto integrador parte 3:
