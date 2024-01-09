@@ -14,3 +14,5 @@ def borrarT_imprimir():
 
         print(num)
         num +=1
+
+borrarT_imprimir()
