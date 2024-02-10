@@ -10,7 +10,7 @@ while True:
     caracter = readchar.readkey()
     if caracter == readchar.key.UP:
         print(f'Flecha arriba, cerrando el sistema...')
-        break
+        break 
     elif caracter == readchar.key.DOWN :
         print(f'El caracter introducido fue: Flecha abajo')
     elif caracter == readchar.key.RIGHT:
