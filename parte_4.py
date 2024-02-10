@@ -25,6 +25,10 @@ laberinto = """..###################
 #.....#.....#.#.#.#.#
 ###################.."""
 
+jugador = input('Digite el nombre del jugador: ')
+
+print(f'¡Vienvenido {jugador}!')
+
 #1 Convierte el string del mapa en una matriz de caracteres 
 def convetir_mapa(mapa: str):
     mapa = mapa.split("\n")
@@ -127,7 +131,7 @@ def main_loop(mapa):
 
 
         if (px,py) == cordenada_final:
-            print('Felicitaciones, haz llegado al final!')
+            print(f'Felicitaciones {jugador} ganaste, haz llegado hasta el final!')
 
 
     
