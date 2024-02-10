@@ -56,8 +56,6 @@ def main_loop(mapa):
 
         
     while (px,py) != cordenada_final:
-        
-        os.system('cls' if os.name=='nt' else 'clear')
 
         #Separa la matríz y la muestra sin llaves ni corchetes 
         borrar_mostrar_mapa(mapa)
