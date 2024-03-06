@@ -1,140 +1,95 @@
 import os
+import random
 import readchar
 
-
 class Juego:
-    def __init__(self, mapa, cordenada_inicial, cordenada_final):
+    def __init__(self, jugador, mapa, cordenada_inicial, cordenada_final ):
+        # Constructor de la clase Juego
+        self.jugador = jugador
         self.mapa = mapa
         self.cordenada_inicial = cordenada_inicial
         self.cordenada_final = cordenada_final
+        self.px, self.py = 0, 0
+        self.mapa[self.px][self.py] = 'P'  # Coloca al jugador en la posición inicial
 
-        
-    #1 Convierte el string del mapa en una matriz de caracteres 
-    def convetir_mapa(self):
-        self.mapa = self.mapa.split("\n")
-        self.mapa = [list(fila) for fila in self.mapa]
-        return self.mapa
-        
-        
-    #2 Borra la consola y muestra el mapa que recibe en forma de matriz
     def borrar_mostrar_mapa(self):
+        # Método para borrar la pantalla y mostrar el mapa actualizado
         os.system('cls' if os.name=='nt' else 'clear')
         for fila in self.mapa:
             print(' '.join(fila))
 
-        
-    #3 Implementación del main loop en una función
+    def mover_jugador(self, direccion):
+        # Método para mover al jugador en el mapa
+        if direccion == 'up':
+            nueva_px = self.px - 1
+            if nueva_px >= 0 and self.mapa[nueva_px][self.py] != '#':
+                self.mapa[self.px][self.py] = '.'  # Borra la posición anterior del jugador
+                self.px = nueva_px
+        elif direccion == 'down':
+            nueva_px = self.px + 1
+            if nueva_px < len(self.mapa) and self.mapa[nueva_px][self.py] != '#':
+                self.mapa[self.px][self.py] = '.'  # Borra la posición anterior del jugador
+                self.px = nueva_px
+        elif direccion == 'right':
+            nueva_py = self.py + 1
+            if nueva_py < len(self.mapa[0]) and self.mapa[self.px][nueva_py] != '#':
+                self.mapa[self.px][self.py] = '.'  # Borra la posición anterior del jugador
+                self.py = nueva_py
+        elif direccion == 'left':
+            nueva_py = self.py - 1
+            if nueva_py >= 0 and self.mapa[self.px][nueva_py] != '#':
+                self.mapa[self.px][self.py] = '.'  # Borra la posición anterior del jugador
+                self.py = nueva_py
+
+        self.mapa[self.px][self.py] = 'P'  # Actualiza la posición del jugador en el mapa
+
     def main_loop(self):
+        # Bucle principal del juego
+        print(f'¡Bienvenido {self.jugador}!')  # Mensaje de bienvenida
+        input("Presiona Enter para comenzar...")
+        
+        while (self.px, self.py) != self.cordenada_final:
+            self.borrar_mostrar_mapa()  # Borra la pantalla y muestra el mapa actualizado
+            print('Dirija al jugador P con las teclas: ↑ ↓ → ←')
+            caracter = readchar.readkey()  # Lee la tecla presionada por el jugador
 
-            
-        cordenada_inicial = (len(mapa[0][0])-1, len(mapa[0][0])-1)
-        cordenada_final = (len(mapa)-1), (len(mapa[0])-1)
+            # Mueve al jugador en la dirección correspondiente
+            if caracter == readchar.key.UP:
+                self.mover_jugador('up')
+            elif caracter == readchar.key.DOWN:
+                self.mover_jugador('down')
+            elif caracter == readchar.key.RIGHT:
+                self.mover_jugador('right')
+            elif caracter == readchar.key.LEFT:
+                self.mover_jugador('left')
 
-        px = 0
-        py = 0
+        self.borrar_mostrar_mapa()  # Muestra el mapa final una vez que se llega al final del laberinto
+        print(f'¡Felicitaciones {self.jugador}! ¡Has llegado al final!')
 
-        posicion_jugador_p = self.mapa[px][py] 
-        self.mapa[px][px] = 'P'
+class JuegoArchivo(Juego):
+    def __init__(self, jugador, path_a_mapas):
+        mapa, cordenada_inicial, cordenada_final = self.elegir_mapa_aleatorio(path_a_mapas)
+        super().__init__(jugador, mapa, cordenada_inicial, cordenada_final)
 
-            
-        while (px,py) != self.cordenada_final:
+    def elegir_mapa_aleatorio(self, path_a_mapas):
+        archivos_de_mapas = os.listdir(path_a_mapas)
+        nombre_archivo = random.choice(archivos_de_mapas)
+        path_completo = os.path.join(path_a_mapas, nombre_archivo)
 
-            #Separa la matríz y la muestra sin llaves ni corchetes 
-            self.borrar_mostrar_mapa(self)
+        with open(path_completo, 'r') as archivo:
+            contenido_mapa = archivo.read()
 
-            print('Dirija al jugador P con las fechas izquierda, derecha, arriba y abajo')
-            caracter = readchar.readkey()
+        # Leer datos de inicio y fin desde la primera fila
+        primer_fila = contenido_mapa.strip().split('\n')[0]
+        puntos = list(map(int, primer_fila.split()))
 
+        cordenada_inicial = (puntos[0], puntos[1])
+        cordenada_final = (puntos[2], puntos[3])
 
-            if caracter == readchar.key.UP: #flecha hacia arriba
-                p_arriba = px - 1
+        # Procesar las filas del mapa
+        filas_mapa = [list(fila) for fila in contenido_mapa.strip().split('\n')[1:]]
 
-                #Verificamos que no se salga del self.mapa y que no sea una pared (Un numeral)
-                if p_arriba < 0 or p_arriba > 21 or self.mapa[p_arriba][py] == '#':
-                    posicion_jugador_p = self.mapa[px][py] 
-                    self.mapa[px][py] = 'P'
-                else:
-                    posicion_jugador_p = self.mapa[p_arriba][py]
-                    self.mapa[p_arriba][py] = 'P'
-                    self.mapa[px][py] = '.'
-                    px = p_arriba
-                #Muestra el self.self.mapa 
-                self.borrar_mostrar_mapa()
+        return filas_mapa, cordenada_inicial, cordenada_final
 
-            if caracter == readchar.key.DOWN: #flecha hacia abajo
-                p_abajo = px + 1
-
-                #Verificamos que no se salga del self.self.mapa y que no sea una pared (Un numeral)
-                if p_abajo < 0 or p_abajo > 21 or self.mapa[p_abajo][py] == '#':
-                    posicion_jugador_p = self.mapa[px][py] 
-                    self.mapa[px][py] = 'P'
-                else:
-                    posicion_jugador_p = self.mapa[p_abajo][py]
-                    self.mapa[p_abajo][py] = 'P'
-                    self.mapa[px][py] = '.'
-                    px = p_abajo
-                #Muestra el self.self.mapa
-                self.borrar_mostrar_mapa() 
-                
-
-            if caracter == readchar.key.RIGHT: #flecha derecha
-                p_derecha = py + 1
-
-                #Verificamos que no se salga del self.self.mapa y que no sea una pared (Un numeral)
-                if p_derecha < 0 or p_derecha > 21 or self.mapa[px][p_derecha] == '#':
-                    posicion_jugador_p = self.mapa[px][py] 
-                    self.mapa[px][py] = 'P'
-                else:
-                    posicion_jugador_p = self.mapa[px][p_derecha]
-                    self.mapa[px][p_derecha] = 'P'
-                    self.mapa[px][py] = '.'
-                    py = p_derecha
-                
-                #Muestra el self.self.mapa
-                self.borrar_mostrar_mapa()
-                    
-
-            if caracter == readchar.key.LEFT: #flecha izquierda
-                p_izquierda = py - 1
-
-                #Verificamos que no se salga del self.self.mapa y que no sea una pared (Un numeral)
-                if p_izquierda < 0 or p_izquierda > 21 or self.mapa[px][p_izquierda] == '#':
-                    posicion_jugador_p = self.mapa[px][py] 
-                    self.mapa[px][py] = 'P'
-                else:
-                    posicion_jugador_p = self.mapa[px][p_izquierda]
-                    self.mapa[px][p_izquierda] = 'P'
-                    self.mapa[px][py] = '.'
-                    py = p_izquierda
-                #Muestra el self.self.mapa 
-                self.borrar_mostrar_mapa()
-
-
-            if (px,py) == self.cordenada_final:
-                print(f'Felicitaciones ganaste, haz llegado hasta el final!')
-
-mapa = """..###################
-....#...............#
-#.#.#####.#########.#
-#.#...........#.#.#.#
-#.#####.#.###.#.#.#.#
-#...#.#.#.#.....#...#
-#.#.#.#######.#.#####
-#.#...#.....#.#...#.#
-#####.#####.#.#.###.#
-#.#.#.#.......#...#.#
-#.#.#.#######.#####.#
-#...#...#...#.#.#...#
-###.#.#####.#.#.###.#
-#.#...#.......#.....#
-#.#.#.###.#.#.###.#.#
-#...#.#...#.#.....#.#
-###.#######.###.###.#
-#.#.#.#.#.#...#.#...#
-#.#.#.#.#.#.#.#.#.#.#
-#.....#.....#.#.#.#.#
-###################.."""
-
-# Instanciamos la clase y ejecutamos el juego
-juego = Juego(mapa, (0, 0), (21, 21))
-juego.main_loop()
+    def ejecutar(self):
+        self.main_loop()

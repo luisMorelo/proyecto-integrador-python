@@ -1,10 +1,24 @@
-import readchar
-from parte_5 import Juego
+import os
+from parte_5 import Juego, JuegoArchivo
 
 
-jugador = input('Digite el nombre del jugador aquie n el main: ')
 
-print(f'¡Vienvenido {jugador}!')
+# Mensaje de bienvenida al usuario para el inicio del juego
+print('Bienvenido al juego del laberinto.')
+nombre = input('Ingrese su nombre: ')
+print(f'{nombre}, el juego está por comenzar. Prepárate.')
+input('Presiona Enter para comenzar...')
+
+# Instanciar el juego con mapas aleatorios
+path_a_mapas = os.path.join(os.path.dirname(__file__), 'mapas')
+juego_archivo = JuegoArchivo(nombre, path_a_mapas)
+
+# Ejecución del juego
+juego_archivo.ejecutar()
+
+# Mensaje de finalización del juego
+print(f'¡Felicitaciones por terminar el juego, {nombre}!')
+
 
 
 '''
@@ -25,19 +39,5 @@ while True:
         print(f'El caracter introducido fue: {caracter}')
     print()
 ''' 
-from parte_5 import Juego
 
-def main():
-    # Definir el mapa y las coordenadas iniciales y finales
-    mapa = "#########\n#.......#\n#.......#\n#.......#\n#.......#\n#.......#\n#.......#\n#########"
-    coordenada_inicial = (1, 1)
-    coordenada_final = (7, 7)
 
-    # Crear una instancia de la clase Juego
-    juego = Juego(mapa, coordenada_inicial, coordenada_final)
-    
-    # Llamar al método main_loop()
-    juego.main_loop()
-
-if __name__ == "__main__":
-    main()

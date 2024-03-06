@@ -27,7 +27,7 @@ laberinto = """..###################
 
 jugador = input('Digite el nombre del jugador: ')
 
-print(f'¡Vienvenido {jugador}!')
+print(f'¡Bienvenido {jugador}!')
 
 #1 Convierte el string del mapa en una matriz de caracteres 
 def convetir_mapa(mapa: str):
