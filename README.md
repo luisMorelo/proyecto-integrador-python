@@ -18,3 +18,12 @@ Podrás moverte por el mapa usando las teclas ↑ ↓ ← → de tu teclado.
    -Se implementó una función que recibe el mapa de un laberinto en forma de cadena, y lo convierta a matriz de caracteres.
    -Se escribió una función que limpia la pantalla y muestre la matriz (recibe el mapa en    forma  de matriz)
    -Se implementó el main loop en una función (recibe el mapa en forma de matriz)
+
+5. Proyecto integrador parte 5: 
+   -Encapsulando el juego en una clase, implementa la clase Juego, ahora el mapa y las posiciones inicial y final son   atributos de esta clase, reescribe todas tus funciones anteriores de forma que sean métodos de la clase y todo esté encapsulado.
+   -Instanciar el juego y ejecutarlo desde el main
+
+   -Almacenando mapas en archivos
+   -Creé una nueva clase JuegoArchivo la cual hereda de Juego,
+   Reescribí el constructor para leer un archivo al azar de una carpeta que contenga los mapas cada vez que se instancia el juego.
+   -Se creó un método para leer los datos de estos archivos de mapa y devuelva una cadena que tenga concatenada todas las filas leídas del mapa y las coordenadas de inicio y fin.
